@@ -23,6 +23,12 @@
       "name": "Build a Blockchain from Scratch in Go",
       "price": 38,
       "in_stock": false
+    },
+    {
+      "id": 10005,
+      "name": "Build a Blockchain from Scratch in React",
+      "price": 51,
+      "in_stock": true
     }
   ]
 }
