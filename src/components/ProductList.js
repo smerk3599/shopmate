@@ -1,14 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useFetch } from "../hooks/useFetch";
 
 export const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  console.log(products);
+  const [url, setUrl] = useState("http://localhost:8000/products");
+  const { data: products, loading, error } = useFetch(url);
 
-  useEffect(() => {
-    fetch("http://localhost:8000/products")
-      .then((response) => response.json())
-      .then((data) => setProducts(data));
-  }, []);
+  return (
+    <section>
+      <div className="filter">
+        <button onClick={() => setUrl("http://localhost:8000/products")}>
+          All
+        </button>
+        <button
+          onClick={() => setUrl("http://localhost:8000/products?in_stock=true")}
+        >
+          In Stock Only
+        </button>
+      </div>
+      {loading && <p className="filter">Loading Products...</p>}
+      {error && <p className="filter">{error}</p>}
 
-  return <div>ProductList</div>;
+      {products &&
+        products.map((product) => (
+          <div className="card" key={product.id}>
+            <p className="id">{product.id}</p>
+            <p className="name">{product.name}</p>
+            <p className="info">
+              <span>${product.price}</span>
+              <span className={product.in_stock ? "instock" : "unavailable"}>
+                {product.in_stock ? "In Stock" : "Unavailable"}
+              </span>
+            </p>
+          </div>
+        ))}
+    </section>
+  );
 };
